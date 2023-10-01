@@ -16,6 +16,10 @@ class API:
         return response(environ, start_response)
 
     def route(self, path):
+        # if path in self.routes:
+        #     raise AssertionError("Route exists")
+        assert path not in self.routes, "Route exists"
+
         def wrapper(handler):
             self.routes[path] = handler
             return handler

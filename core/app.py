@@ -8,6 +8,13 @@ app = API()
 def home(request, response):
     response.text = "hello"
 
+# Uncomment this to see the error: AssertionError("Route exists")
+
+# @app.route('/home')
+# def home(request, response):
+#     response.text = "hello"
+
+
 @app.route('/about')
 def about(request, response):
     response.text = "about page"
