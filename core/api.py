@@ -1,8 +1,6 @@
 # Api
-from cgitb import handler
-from email.policy import default
-from typing import Any
-from urllib import request, response
+
+from parse import parse
 from webob import Request, Response
 
 
@@ -30,21 +28,25 @@ class API:
     
     def find_handler(self, request_path):
         for path, handler in self.routes.items():
-            if path == request_path:
-                return handler
-       
+            parse_result = parse(path, request_path)
+            if parse_result is not None:
+                return handler, parse_result.named # type: ignore check parse library for more info
+        return None, None
 
     def handle_request(self, request):
-        user_agent = request.environ.get('HTTP_USER_AGENT', 'No User Agent Found')
-
+        
         response = Response()
 
-        handler = self.find_handler(request_path=request.path)
+        handler, kwargs = self.find_handler(request_path=request.path)
 
         if handler is not None:
-            handler(request, response)
+            handler(request, response, **kwargs) # kwargs injects the named parameters from the parse library
         else:
             self.default_response(response)
        
-        # response.text = f"Hello, my friend with user agent: {user_agent}"
+        return response
+    
+    def test_client(self, environ):
+        request = Request(environ)
+        response = self.handle_request(request)
         return response

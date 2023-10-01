@@ -4,6 +4,15 @@ import logging
 
 
 class TestAPI(unittest.TestCase):
+    """
+    This module contains unit tests for the API class in core.api.
+
+    The TestAPI class contains two test methods:
+    - test_route_decorator: tests the functionality of the route decorator by adding routes to the API instance and printing the current routes.
+    - test_handle_request: tests the handle_request method of the API class by creating a mock request and verifying the response text.
+
+    The module can be run as a script to execute the unit tests.
+    """
     def setUp(self):
         self.api = API()
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -51,7 +60,29 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.text, expected_response_text)
         logging.debug(f'Response: {response.status_code}, {response.text}, {response.status}')
     
-   
+    def test_test_client(self):
+        api = API()
+
+        # Define a simple handler for a route
+        @api.route("/hello")
+        def hello_handler(request, response):
+            response.text = "Hello, World!"
+
+        # Create a simulated request environment
+        environ = {
+            'REQUEST_METHOD': 'GET',
+            'PATH_INFO': '/hello',
+           
+        }
+
+        # Use the test_client method to get the response
+        response = api.test_client(environ)
+
+        # Assert that the response is as expected
+        self.assertEqual(response.text, "Hello, World!")
+        self.assertEqual(response.status, "200 OK")
+
+        
 
 if __name__ == '__main__':
     unittest.main()

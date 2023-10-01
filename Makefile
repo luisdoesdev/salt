@@ -5,5 +5,5 @@ app:
 	gunicorn --chdir core app:app
 
 tests:
-	python -m unittest discover -s core/tests
+	PYTHONPATH=. pytest
 
