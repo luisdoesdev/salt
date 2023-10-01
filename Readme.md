@@ -37,7 +37,7 @@ To run this project it's essential to create a sepperate envs where to store the
 - Activate `salt` and you will see this(fig 1.1)
 
 Fig:1.1
-[salt-env]('salt-env.png')
+![salt-env](salt-env.png)
 
 - if you ever get out of the enviroment feel free to activate it by `workon salt`
 
@@ -57,8 +57,8 @@ Run the project Fig:1.2
 `make app`
 
 Fig:1.2
-[salt-server]('salt-server.png')
+![salt-server](salt-server.png)
 
 
-# To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/'] to give context to the evolution of changes throught out the project.
+To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/'] to give context to the evolution of changes throught out the project.
 
