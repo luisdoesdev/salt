@@ -33,19 +33,20 @@ Salt/
 To run this project it's essential to create a sepperate envs where to store the all the project's dependencies.
 
 - Install  `pip install virtualenvwrapper`
-- ~~Follow this instructions [virtualenvwraper]('https://virtualenvwrapper.readthedocs.io/en/latest/') to create a virtual env wrappper named `salt``~~
-- ```
+- Follow this instructions: source[virtualenvwraper]('https://virtualenvwrapper.readthedocs.io/en/latest/') to create a virtual env wrappper named `salt`
+```
 $    export WORKON_HOME=~/Envs
 $    mkdir -p $WORKON_HOME
 $    which virtualenvwrapper.sh
 $    source {printed/virual/path}/virtualenvwrapper.sh
 ```
 
-- Activate `salt` and you will see this(fig 1.1)
+- Activate `salt` and you will see this(Fig 1.1)
 
 
-Fig:1.1
-![salt-env](salt-env.png)
+
+
+![Figure 1.1: salt-env](salt-env.png "Figure 1.1: Salt environment")
 
 - if you ever get out of the enviroment feel free to activate it by `workon salt`
 
@@ -64,8 +65,8 @@ Unload the projects dependies in the project
 Run the project Fig:1.2
 `make app`
 
-Fig:1.2
-![salt-server](salt-server.png)
+
+![Fig:1.2: salt-server](salt-server.png "Fig:1.2: salt-server")
 
 
 To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/'] to give context to the evolution of changes throught out the project.
