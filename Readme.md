@@ -33,8 +33,9 @@ Salt/
 To run this project it's essential to create a sepperate envs where to store the all the project's dependencies.
 
 - Install  `pip install virtualenvwrapper`
-- Follow this `https://virtualenvwrapper.readthedocs.io/en/latest/` to create a virtuale env wrappper named salt
+- Follow this instructions [virtualenvwraper]('https://virtualenvwrapper.readthedocs.io/en/latest/') to create a virtual env wrappper named `salt``
 - Activate `salt` and you will see this(fig 1.1)
+
 
 Fig:1.1
 ![salt-env](salt-env.png)
