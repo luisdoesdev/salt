@@ -2,6 +2,8 @@
 
 Salt is a custom Python web framework built from scratch.
 
+Case Study OutCome: Allows less experienced developer understand how a modern python framework(`Flask, Django, FastAPI`) works under the hood.
+
 ## Directory Structure
 ```
 Salt/
@@ -16,7 +18,25 @@ Salt/
 └── changelog.md
 ```
 
+## Evolution
 
+Conventional Commits is a specification for adding human and machine-readable meaning to commit messages. It provides a set of rules for creating an explicit commit history, which makes it easier to write automated tools on top of the commit history.
+
+Each commit message should start with a type, followed by a colon and a space, and then a brief description of the changes made in the commit. The type can be one of the following:
+
+- `feat`: a new feature
+- `fix`: a bug fix
+- `docs`: changes to documentation
+- `style`: formatting, missing semi colons, etc; no code change
+- `refactor`: refactoring production code
+- `test`: adding tests, refactoring test; no production code change
+- `chore`: updating build tasks, package manager configs, etc; no production code change
+
+By following this convention, you can easily navigate the commit history and understand the changes made to the project over time.
+
+
+## File Intents:
+The "File Intents" section in the README file is meant to provide a brief description of the purpose of each file and directory in the project's directory structure. This information can be useful for developers who are new to the project and need to quickly understand what each file and directory is for. It can also serve as a reference for developers who are already familiar with the project but need a quick reminder of what a particular file or directory is used for:
 - `Makefile`: a file that contains instructions for the `make` utility
 - `core/`: a directory that contains the core application code
 - `core/__init__.py`: an empty file that marks the `core` directory as a Python package
