@@ -56,7 +56,7 @@ Unload the projects dependies in the project
 Run the project Fig:1.2
 `make app`
 
-Fig:1.1
+Fig:1.2
 [salt-server]('salt-server.png')
 
 
