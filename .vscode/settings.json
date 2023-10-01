@@ -1,0 +1,15 @@
+{
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "makefile.configurations": [
+    {
+      "name": "Default",
+      "makeArgs": []
+    },
+    {
+      "name": "Print make version",
+      "makeArgs": ["--version"]
+    }
+  ],
+}
