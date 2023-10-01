@@ -89,5 +89,5 @@ Run the project Fig:1.2
 ![Fig:1.2: salt-server](salt-server.png "Fig:1.2: salt-server")
 
 
-To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/'] to give context to the evolution of changes throught out the project.
+To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/') to give context to the evolution of changes throught out the project.
 
