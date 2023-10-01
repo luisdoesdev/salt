@@ -1,12 +1,14 @@
 #App
-import unittest
-from urllib import response
 from api import API
 
 app = API()
 
-# add route handling
+
+@app.route('/home')
 def home(request, response):
     response.text = "hello"
 
+@app.route('/about')
+def about(request, response):
+    response.text = "about page"
 
