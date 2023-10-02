@@ -3,6 +3,9 @@ from core.api import API
 import logging
 
 
+# TODO: Add more test cases as needed, reffacto to depend on fixtures
+
+
 class TestAPI(unittest.TestCase):
     """
     This module contains unit tests for the API class in core.api.
@@ -13,19 +16,22 @@ class TestAPI(unittest.TestCase):
 
     The module can be run as a script to execute the unit tests.
     """
+
     def setUp(self):
         self.api = API()
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s - %(levelname)s - %(message)s')
 
     def test_route_decorator(self):
         '''
         Test the functionality of the route decorator by adding routes to 
         the API instance and printing the current routes.
-        
+
         It's interactive as well, so you can play around with it.
-        
+
         '''
         logging.debug('Starting test_route_decorator')
+
         def add_route(route_names):
             if len(route_names) == 0:
                 return
@@ -35,17 +41,19 @@ class TestAPI(unittest.TestCase):
                     response.text = {route_name}
                     logging.info(f'Response text set to {response.text}')
 
-        route_names = ['home','about'] # feel free to add remove route names
+        route_names = ['home', 'about']  # feel free to add remove route names
         add_route(route_names)
         logging.debug(f'This are the current routes: {self.api.routes.keys()}')
         self.assertIn('/home', self.api.routes.keys())
         self.assertIn('/about', self.api.routes.keys())
-    
+
     def test_handle_request(self):
         class MockRequest:
-            environ = {'HTTP_USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+            environ = {
+                'HTTP_USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
             path = '/home'
         expected_response_text = "Hello, my friend with user agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+
         def add_route(route_names):
             if len(route_names) == 0:
                 return
@@ -54,12 +62,13 @@ class TestAPI(unittest.TestCase):
                 def route_function(request, response):
                     response.text = expected_response_text
                     logging.info(f'Response text set to {response.text}')
-        route_names = ['home'] # add route name
+        route_names = ['home']  # add route name
         add_route(route_names)
         response = self.api.handle_request(MockRequest())
         self.assertEqual(response.text, expected_response_text)
-        logging.debug(f'Response: {response.status_code}, {response.text}, {response.status}')
-    
+        logging.debug(
+            f'Response: {response.status_code}, {response.text}, {response.status}')
+
     def test_test_client(self):
         api = API()
 
@@ -72,7 +81,7 @@ class TestAPI(unittest.TestCase):
         environ = {
             'REQUEST_METHOD': 'GET',
             'PATH_INFO': '/hello',
-           
+
         }
 
         # Use the test_client method to get the response
@@ -82,7 +91,6 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.text, "Hello, World!")
         self.assertEqual(response.status, "200 OK")
 
-        
 
 if __name__ == '__main__':
     unittest.main()

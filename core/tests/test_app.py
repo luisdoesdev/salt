@@ -1,7 +1,12 @@
+import logging
+from math import log
 import unittest
+import pytest
 from webob import Request
 from api import API
 
+
+# TODO: Add more test cases as needed, reffacto to depend on fixtures
 class TestAPIRoutes(unittest.TestCase):
     """
     Test the features of the API class.
@@ -15,7 +20,6 @@ class TestAPIRoutes(unittest.TestCase):
 
     def setUp(self):
         self.api = API()
-        
 
         @self.api.route('/home')
         def home(request, response):
@@ -28,9 +32,10 @@ class TestAPIRoutes(unittest.TestCase):
         @self.api.route('/hello/{name}')
         def greeting(request, response, name):
             response.text = f"hello, {name}"
-        
+
         route_name = self.route_name
-        @self.api.route(f'/{route_name}') # Feel freer to change route
+
+        @self.api.route(f'/{route_name}')  # Feel freer to change route
         class BooksResource:
             def get(self, req, resp):
                 resp.text = f"{route_name.capitalize()} Page"
@@ -61,7 +66,7 @@ class TestAPIRoutes(unittest.TestCase):
         response = self.simulate_request('/hello/John')
         self.assertEqual(response.text, "hello, John")
         self.assertEqual(response.status, "200 OK")
-    
+
     def test_books_get(self):
         response = self.simulate_request(f'/{self.route_name}', method="GET")
         self.assertEqual(response.text, f"{self.route_name.capitalize()} Page")
@@ -69,11 +74,10 @@ class TestAPIRoutes(unittest.TestCase):
 
     def test_books_post(self):
         response = self.simulate_request(f'/{self.route_name}', method="POST")
-        self.assertEqual(response.text, f"Endpoint to create a {self.route_name.capitalize()}")
+        self.assertEqual(
+            response.text, f"Endpoint to create a {self.route_name.capitalize()}")
         self.assertEqual(response.status, "200 OK")
+
 
 if __name__ == "__main__":
     unittest.main()
-
-
-            
