@@ -1,4 +1,4 @@
-# Salt
+# Salt🧂 
 
 Salt is a custom Python web framework built from scratch.
 
@@ -59,6 +59,7 @@ $    export WORKON_HOME=~/Envs
 $    mkdir -p $WORKON_HOME
 $    which virtualenvwrapper.sh
 $    source {printed/virual/path}/virtualenvwrapper.sh
+$    mkvirtualenv salt
 ```
 
 - Activate `salt` and you will see this(Fig 1.1)
