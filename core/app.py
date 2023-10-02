@@ -35,3 +35,10 @@ class BooksResource:
     
     def post(self, req,resp):
         resp.text = "Endpoint to create a book"
+
+
+
+def alternative_routing(req, resp):
+    resp.text = "sample"
+
+app.add_route("/sample", alternative_routing)

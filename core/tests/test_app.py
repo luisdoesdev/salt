@@ -1,8 +1,5 @@
-import logging
-from math import log
+
 import unittest
-import pytest
-from webob import Request
 from api import API
 
 
@@ -78,6 +75,14 @@ class TestAPIRoutes(unittest.TestCase):
             response.text, f"Endpoint to create a {self.route_name.capitalize()}")
         self.assertEqual(response.status, "200 OK")
 
+def test_alternative_route(api, client):
+    response_text = 'This is test illustrating an alternative way to add routes'
+    def home(req, resp):
+        resp.text = response_text
+
+    api.add_route("/alternative", home)
+
+   
 
 if __name__ == "__main__":
     unittest.main()

@@ -15,6 +15,10 @@ class API:
         response = self.handle_request(request)
 
         return response(environ, start_response)
+    
+    def add_route(self, path, handler):
+        assert path not in self.routes, "Route exists"
+        self.routes[path] = handler
 
     def route(self, path):
         # if path in self.routes:
@@ -62,3 +66,6 @@ class API:
         request = Request(environ)
         response = self.handle_request(request)
         return response
+    
+    
+       

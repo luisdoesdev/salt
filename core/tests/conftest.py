@@ -8,9 +8,14 @@ def api():
     return API()
 
 @pytest.fixture
-def client(api):
-    
-    return api.test_client()
+def client(api,  method='GET', path='/'):
+    environ = {
+            'REQUEST_METHOD': method,
+            'PATH_INFO': path,
+            'wsgi.url_scheme': 'http',
+            'wsgi.input': b""
+        }
+    return api.test_client(environ)
 
 
 # TODO: Add more fixtures as needed
