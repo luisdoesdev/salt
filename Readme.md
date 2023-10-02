@@ -1,8 +1,8 @@
 # Salt🧂 
 
-Salt is a custom Python web framework built from scratch.
+## The Case Study to Demystify Modern Python Web Frameworks
+Deepen your understanding of Python web frameworks like Flask, Django, and FastAPI with this comprehensive case study. Explore, learn, and master the art of web development.
 
-Case Study OutCome: Allows less experienced developer understand how a modern python framework(`Flask, Django, FastAPI`) works under the hood.
 
 ## Directory Structure
 ```
@@ -90,5 +90,4 @@ Run the project Fig:1.2
 ![Fig:1.2: salt-server](salt-server.png "Fig:1.2: salt-server")
 
 
-To give better context of this project I follow [Convetional Commits]('https://www.conventionalcommits.org/en/v1.0.0/') to give context to the evolution of changes throught out the project.
 
