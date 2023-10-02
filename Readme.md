@@ -1,4 +1,8 @@
-# Salt🧂 
+ 
+
+# 🚧 WIP ver 0 👷🏿‍♂️ 🚧
+
+## Salt🧂
 
 ## The Case Study to Demystify Modern Python Web Frameworks
 Deepen your understanding of Python web frameworks like Flask, Django, and FastAPI with this comprehensive case study. Explore, learn, and master the art of web development.
@@ -91,3 +95,63 @@ Run the project Fig:1.2
 
 
 
+# Contributing to Salt
+
+Thank you for your interest in contributing to Salt! Here are some guidelines to help you get started.
+
+## Reporting Bugs
+
+If you find a bug in Salt, please open an issue on our GitHub repository and include as much detail as possible, such as:
+
+- Steps to reproduce the bug
+- Expected behavior
+- Actual behavior
+- Any error messages or stack traces
+
+## Submitting Feature Requests
+
+If you have an idea for a new feature in Salt, please open an issue on the GitHub repository and include as much detail as possible, such as:
+
+- A description of the feature
+- Use cases for the feature
+- Any potential drawbacks or limitations of the feature
+
+## Contributing Code
+
+If you would like to contribute code to Salt, please follow these steps:
+
+1. Fork the Salt repository on GitHub.
+2. Clone your forked repository to your local machine.
+3. Create a new branch for your changes.
+4. Make your changes and commit them to your branch.
+5. Push your branch to your forked repository on GitHub.
+6. Open a pull request on the Salt repository.
+
+Please make sure to include tests for any new code you add, and make sure all tests pass before submitting your pull request.
+
+Thank you for your interest and contributions to Salt!
+
+
+
+
+MIT License
+
+Copyright (c) 2023 Luis Torruella and Adobo Digital 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
