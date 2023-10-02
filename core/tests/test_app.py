@@ -11,8 +11,11 @@ class TestAPIRoutes(unittest.TestCase):
         about route, and greeting route. The simulate_request method is used to simulate requests to the routes, 
         and the test_client method is used to test the responses. The test cases include checking if the response text and status are correct.  
     """
+    route_name = "car"
+
     def setUp(self):
         self.api = API()
+        
 
         @self.api.route('/home')
         def home(request, response):
@@ -25,10 +28,19 @@ class TestAPIRoutes(unittest.TestCase):
         @self.api.route('/hello/{name}')
         def greeting(request, response, name):
             response.text = f"hello, {name}"
+        
+        route_name = self.route_name
+        @self.api.route(f'/{route_name}') # Feel freer to change route
+        class BooksResource:
+            def get(self, req, resp):
+                resp.text = f"{route_name.capitalize()} Page"
 
-    def simulate_request(self, path):
+            def post(self, req, resp):
+                resp.text = f"Endpoint to create a {route_name.capitalize()}"
+
+    def simulate_request(self, path, method='GET'):
         environ = {
-            'REQUEST_METHOD': 'GET',
+            'REQUEST_METHOD': method,
             'PATH_INFO': path,
             'wsgi.url_scheme': 'http',
             'wsgi.input': b""
@@ -48,6 +60,16 @@ class TestAPIRoutes(unittest.TestCase):
     def test_greeting_route(self):
         response = self.simulate_request('/hello/John')
         self.assertEqual(response.text, "hello, John")
+        self.assertEqual(response.status, "200 OK")
+    
+    def test_books_get(self):
+        response = self.simulate_request(f'/{self.route_name}', method="GET")
+        self.assertEqual(response.text, f"{self.route_name.capitalize()} Page")
+        self.assertEqual(response.status, "200 OK")
+
+    def test_books_post(self):
+        response = self.simulate_request(f'/{self.route_name}', method="POST")
+        self.assertEqual(response.text, f"Endpoint to create a {self.route_name.capitalize()}")
         self.assertEqual(response.status, "200 OK")
 
 if __name__ == "__main__":

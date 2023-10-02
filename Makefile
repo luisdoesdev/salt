@@ -1,3 +1,6 @@
+
+.PHONY: tests
+
 install:
 	pip install -r core/requirements.txt
 

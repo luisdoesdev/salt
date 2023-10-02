@@ -7,3 +7,4 @@
 - Implemented request handlers
 - Added routing with simple route and parameters
 - Duplicate Route handler
+- Class base handler
