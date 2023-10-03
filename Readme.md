@@ -52,21 +52,56 @@ The "File Intents" section in the README file is meant to provide a brief descri
 - `changelog.md`: a file that contains a log of changes to the project
  
 
-## Prerequisties
+## Prerequisites
+To run this project, it's essential to use Docker, which allows you to package the application and its dependencies into a container that can run on any computing environment.
 
-To run this project it's essential to create a sepperate envs where to store the all the project's dependencies.
+Install Docker following the instructions on the official Docker documentation.
+Building the Docker Image
+Build the Docker image for the Salt application. Navigate to the project directory and run:
 
-- Install  `pip install virtualenvwrapper`
-- Follow this instructions: source[virtualenvwraper]('https://virtualenvwrapper.readthedocs.io/en/latest/') to create a virtual env wrappper named `salt`
-```
-$    export WORKON_HOME=~/Envs
-$    mkdir -p $WORKON_HOME
-$    which virtualenvwrapper.sh
-$    source {printed/virual/path}/virtualenvwrapper.sh
-$    mkvirtualenv salt
-```
+bash
+Copy code
+$ docker build -t salt-app .
+This command builds the Docker image using the Dockerfile in the current directory and tags it as salt-app.
+Running the Application
+To run the Salt application inside a Docker container, use the following command:
 
-- Activate `salt` and you will see this(Fig 1.1)
+bash
+Copy code
+$ docker run -p 8000:8000 salt-app
+This command runs the Docker container and maps port 8000 on your machine to port 8000 on the container. Now, you should be able to access the application at http://localhost:8000 in your web browser.
+
+Stopping the Application
+To stop the Docker container running the Salt application, first find the container ID with:
+
+bash
+Copy code
+$ docker ps
+Then, stop the container using:
+
+bash
+Copy code
+$ docker stop [CONTAINER_ID]
+Replace [CONTAINER_ID] with the actual ID of your running container.
+
+Start
+With Docker, managing and running the project becomes straightforward and does not require managing dependencies on your local machine.
+
+Running the Application
+As mentioned in the prerequisites section, use the following command to run the application:
+
+bash
+Copy code
+$ docker run -p 8000:8000 salt-app
+Running Tests
+If you have tests defined and would like to run them in a Docker environment, ensure your Dockerfile or an additional Dockerfile is set up to run tests, and use the following command:
+
+bash
+Copy code
+$ docker run salt-app test
+Ensure that the test command is defined in your Docker setup to run your tests.
+
+
 
 
 

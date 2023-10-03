@@ -7,5 +7,5 @@
 # Ignore virtual environment directories
 venv/
 
-Dockerfile
+
 .coverage
