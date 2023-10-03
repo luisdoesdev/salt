@@ -13,3 +13,7 @@ tests:
 
 tests-reports:
 	PYTHONPATH=. pytest $(TEST)  -o log_cli=true -o log_cli_level=INFO -o log_cli_format='%(asctime)s %(levelname)s %(message)s' -o log_cli_date_format='%Y-%m-%d %H:%M:%S' 
+
+shutdown:
+    # echo "Shutting down process on port 8000..." \
+    lsof -ti :8000 | xargs kill
