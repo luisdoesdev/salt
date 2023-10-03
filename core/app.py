@@ -1,18 +1,13 @@
 #App
 from api import API
 
-app = API()
+TEMPLATE = "templates" # TODO: remove the need for 'core' in the path
+app = API(templates_dir=TEMPLATE)
 
 
 @app.route('/home')
 def home(request, response):
     response.text = "hello"
-
-# Uncomment this to see the error: AssertionError("Route exists")
-
-# @app.route('/home')
-# def home(request, response):
-#     response.text = "hello"
 
 
 @app.route('/about')
@@ -36,9 +31,11 @@ class BooksResource:
     def post(self, req,resp):
         resp.text = "Endpoint to create a book"
 
-
-
 def alternative_routing(req, resp):
     resp.text = "sample"
 
 app.add_route("/sample", alternative_routing)
+
+@app.route("/template")
+def template_handler(req, resp):
+    resp.text = app.template("index.html", context={"name": "Template Name", "name": "Salt Framework"})

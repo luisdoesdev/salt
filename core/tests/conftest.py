@@ -5,7 +5,7 @@ from core.api import API
 
 @pytest.fixture
 def api():
-    return API()
+    return API('core/templates')
 
 @pytest.fixture
 def client(api,  method='GET', path='/'):

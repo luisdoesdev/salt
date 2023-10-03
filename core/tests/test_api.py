@@ -1,98 +1,56 @@
-import unittest
-from core.api import API
-import logging
+import pytest
+from api import API
 
+# Fixture for the API instance
+@pytest.fixture
+def api():
+    return API('core/templates')
 
-# TODO: Add more test cases as needed, reffacto to depend on fixtures
+# Fixture for the test client
+@pytest.fixture
+def client(api):
+    return api.test_client()
 
+def test_route_addition_and_access(api, client):
+    @api.route("/test")
+    def test_route(req, resp):
+        resp.text = "Test Route"
 
-class TestAPI(unittest.TestCase):
-    """
-    This module contains unit tests for the API class in core.api.
+    response = client.get("http://testserver/test")
+    assert response.status_code == 200
+    assert response.text == "Test Route"
 
-    The TestAPI class contains two test methods:
-    - test_route_decorator: tests the functionality of the route decorator by adding routes to the API instance and printing the current routes.
-    - test_handle_request: tests the handle_request method of the API class by creating a mock request and verifying the response text.
+def test_non_existent_route(client):
+    response = client.get("http://testserver/non_existent")
+    assert response.status_code == 404
+    assert response.text == "Not found"
 
-    The module can be run as a script to execute the unit tests.
-    """
+def test_duplicate_route_assertion(api):
+    @api.route("/duplicate")
+    def duplicate_route(req, resp):
+        resp.text = "Duplicate Route"
 
-    def setUp(self):
-        self.api = API()
-        logging.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s - %(levelname)s - %(message)s')
+    with pytest.raises(AssertionError):
+        @api.route("/duplicate")
+        def another_duplicate_route(req, resp):
+            resp.text = "Another Duplicate Route"
 
-    def test_route_decorator(self):
-        '''
-        Test the functionality of the route decorator by adding routes to 
-        the API instance and printing the current routes.
+def test_route_with_named_parameters(api, client):
+    @api.route("/greet/{name}")
+    def greet_route(req, resp, name):
+        resp.text = f"Hello, {name}"
 
-        It's interactive as well, so you can play around with it.
+    response = client.get("http://testserver/greet/John")
+    assert response.status_code == 200
+    assert response.text == "Hello, John"
 
-        '''
-        logging.debug('Starting test_route_decorator')
+def test_class_based_handler(api, client):
+    class Handler:
+        def get(self, req, resp):
+            resp.text = "Class Based Handler"
 
-        def add_route(route_names):
-            if len(route_names) == 0:
-                return
-            for route_name in route_names:
-                @self.api.route(f'/{route_name}')
-                def route_function(request, response):
-                    response.text = {route_name}
-                    logging.info(f'Response text set to {response.text}')
+    api.add_route("/class_based", Handler)
 
-        route_names = ['home', 'about']  # feel free to add remove route names
-        add_route(route_names)
-        logging.debug(f'This are the current routes: {self.api.routes.keys()}')
-        self.assertIn('/home', self.api.routes.keys())
-        self.assertIn('/about', self.api.routes.keys())
-
-    def test_handle_request(self):
-        class MockRequest:
-            environ = {
-                'HTTP_USER_AGENT': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
-            path = '/home'
-        expected_response_text = "Hello, my friend with user agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
-
-        def add_route(route_names):
-            if len(route_names) == 0:
-                return
-            for route_name in route_names:
-                @self.api.route(f'/{route_name}')
-                def route_function(request, response):
-                    response.text = expected_response_text
-                    logging.info(f'Response text set to {response.text}')
-        route_names = ['home']  # add route name
-        add_route(route_names)
-        response = self.api.handle_request(MockRequest())
-        self.assertEqual(response.text, expected_response_text)
-        logging.debug(
-            f'Response: {response.status_code}, {response.text}, {response.status}')
-
-    def test_test_client(self):
-        api = API()
-
-        # Define a simple handler for a route
-        @api.route("/hello")
-        def hello_handler(request, response):
-            response.text = "Hello, World!"
-
-        # Create a simulated request environment
-        environ = {
-            'REQUEST_METHOD': 'GET',
-            'PATH_INFO': '/hello',
-
-        }
-
-        # Use the test_client method to get the response
-        response = api.test_client(environ)
-
-        # Assert that the response is as expected
-        self.assertEqual(response.text, "Hello, World!")
-        self.assertEqual(response.status, "200 OK")
-
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+    response = client.get("http://testserver/class_based")
+    assert response.status_code == 200
+    assert response.text == "Class Based Handler"

@@ -1,88 +1,84 @@
-
-import unittest
+import pytest
 from api import API
 
+# Fixture for the API instance
+@pytest.fixture
+def api():
+    app = API('core/templates')
 
-# TODO: Add more test cases as needed, reffacto to depend on fixtures
-class TestAPIRoutes(unittest.TestCase):
-    """
-    Test the features of the API class.
-        This module contains unit tests for the API 
-        class in the api.py file. It tests the functionality of the API class by 
-        simulating requests to the routes defined in the class. The tests include testing the home route, 
-        about route, and greeting route. The simulate_request method is used to simulate requests to the routes, 
-        and the test_client method is used to test the responses. The test cases include checking if the response text and status are correct.  
-    """
+    @app.route('/home')
+    def home(request, response):
+        response.text = "hello"
+
+    @app.route('/about')
+    def about(request, response):
+        response.text = "about page"
+
+    @app.route('/hello/{name}')
+    def greeting(request, response, name):
+        response.text = f"hello, {name}"
+
     route_name = "car"
 
-    def setUp(self):
-        self.api = API()
+    @app.route(f'/{route_name}')
+    class BooksResource:
+        def get(self, req, resp):
+            resp.text = f"{route_name.capitalize()} Page"
 
-        @self.api.route('/home')
-        def home(request, response):
-            response.text = "hello"
+        def post(self, req, resp):
+            resp.text = f"Endpoint to create a {route_name.capitalize()}"
 
-        @self.api.route('/about')
-        def about(request, response):
-            response.text = "about page"
+    return app
 
-        @self.api.route('/hello/{name}')
-        def greeting(request, response, name):
-            response.text = f"hello, {name}"
+# Fixture for the test client
+@pytest.fixture
+def client(api):
+    return api.test_client()
 
-        route_name = self.route_name
+def test_home_route(client):
+    response = client.get('http://testserver/home')
+    assert response.text == "hello"
+    assert response.status_code == 200
 
-        @self.api.route(f'/{route_name}')  # Feel freer to change route
-        class BooksResource:
-            def get(self, req, resp):
-                resp.text = f"{route_name.capitalize()} Page"
+def test_about_route(client):
+    response = client.get('http://testserver/about')
+    assert response.text == "about page"
+    assert response.status_code == 200
 
-            def post(self, req, resp):
-                resp.text = f"Endpoint to create a {route_name.capitalize()}"
+def test_greeting_route(client):
+    response = client.get('http://testserver/hello/John')
+    assert response.text == "hello, John"
+    assert response.status_code == 200
 
-    def simulate_request(self, path, method='GET'):
-        environ = {
-            'REQUEST_METHOD': method,
-            'PATH_INFO': path,
-            'wsgi.url_scheme': 'http',
-            'wsgi.input': b""
-        }
-        return self.api.test_client(environ)
+def test_books_get(client):
+    route_name = "car"
+    response = client.get(f'http://testserver/{route_name}')
+    assert response.text == f"{route_name.capitalize()} Page"
+    assert response.status_code == 200
 
-    def test_home_route(self):
-        response = self.simulate_request('/home')
-        self.assertEqual(response.text, "hello")
-        self.assertEqual(response.status, "200 OK")
-
-    def test_about_route(self):
-        response = self.simulate_request('/about')
-        self.assertEqual(response.text, "about page")
-        self.assertEqual(response.status, "200 OK")
-
-    def test_greeting_route(self):
-        response = self.simulate_request('/hello/John')
-        self.assertEqual(response.text, "hello, John")
-        self.assertEqual(response.status, "200 OK")
-
-    def test_books_get(self):
-        response = self.simulate_request(f'/{self.route_name}', method="GET")
-        self.assertEqual(response.text, f"{self.route_name.capitalize()} Page")
-        self.assertEqual(response.status, "200 OK")
-
-    def test_books_post(self):
-        response = self.simulate_request(f'/{self.route_name}', method="POST")
-        self.assertEqual(
-            response.text, f"Endpoint to create a {self.route_name.capitalize()}")
-        self.assertEqual(response.status, "200 OK")
+def test_books_post(client):
+    route_name = "car"
+    response = client.post(f'http://testserver/{route_name}')
+    assert response.text == f"Endpoint to create a {route_name.capitalize()}"
+    assert response.status_code == 200
 
 def test_alternative_route(api, client):
     response_text = 'This is test illustrating an alternative way to add routes'
+
     def home(req, resp):
         resp.text = response_text
 
     api.add_route("/alternative", home)
+    response = client.get('http://testserver/alternative')
+    assert response.text == response_text
+    assert response.status_code == 200
 
-   
+def test_template(api, client):
+    @api.route("/html")
+    def html_handler(req, resp):
+        resp.body = api.template("index.html", context={"title": "Response Title", "name": "Response Text"}).encode()
 
-if __name__ == "__main__":
-    unittest.main()
+    response = client.get('http://testserver/html')
+    assert "text/html" in response.headers["Content-Type"]
+    assert "Response Title" in response.text
+    assert "Response Text" in response.text
