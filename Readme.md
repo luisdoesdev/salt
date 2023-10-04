@@ -41,54 +41,38 @@ By following this convention, you can easily navigate the commit history and und
 
 ## File Intents:
 The "File Intents" section in the README file is meant to provide a brief description of the purpose of each file and directory in the project's directory structure. This information can be useful for developers who are new to the project and need to quickly understand what each file and directory is for. It can also serve as a reference for developers who are already familiar with the project but need a quick reminder of what a particular file or directory is used for:
-- `Makefile`: a file that contains instructions for the `make` utility
+- ~~`Makefile`: a file that contains instructions for the `make` utility~~
 - `core/`: a directory that contains the core application code
 - `core/__init__.py`: an empty file that marks the `core` directory as a Python package
 - `core/app.py`: a file that contains the main application code
 - `core/tests/`: a directory that contains the unit tests for the application
 - `core/tests/__init__.py`: an empty file that marks the `tests` directory as a Python package
 - `core/tests/test.py`: a file that contains the unit tests for the application
+- `tasks.py`: a file that contains the tasks for the `invoke` utility
 - `.gitignore`: a file that specifies files and directories that should be ignored by Git
 - `changelog.md`: a file that contains a log of changes to the project
  
 
-## Prerequisties
+## Prerequisites
 
-To run this project it's essential to create a sepperate envs where to store the all the project's dependencies.
+## Installation
+1. Install virtualenv `pip install virtualenv`
+2. create virtualenv `virtualenv -p python3 salt`
+3. activate virtualenv `source salt/bin/activate` Fig:1.1
+4. Install invoke `pip install invoke`
+5. Install dependencies `invoke install`
 
-- Install  `pip install virtualenvwrapper`
-- Follow this instructions: source[virtualenvwraper]('https://virtualenvwrapper.readthedocs.io/en/latest/') to create a virtual env wrappper named `salt`
+## Usage
+The following commands are available in the project:
 ```
-$    export WORKON_HOME=~/Envs
-$    mkdir -p $WORKON_HOME
-$    which virtualenvwrapper.sh
-$    source {printed/virual/path}/virtualenvwrapper.sh
-$    mkvirtualenv salt
+    invoke test    - to run tests
+    invoke app     - to run the app fig:1.2
 ```
-
-- Activate `salt` and you will see this(Fig 1.1)
-
-
 
 
 ![Figure 1.1: salt-env](salt-env.png "Figure 1.1: Salt environment")
 
-- if you ever get out of the enviroment feel free to activate it by `workon salt`
-
-
-
-Now that you have setup the salt env you will have access to the Make file commands
-which will make it easier to manage the project
-
-_if make commands to do work ensure that they can be executed `chmod +x Makefile`_
-
-
-# Start
-Unload the projects dependies in the project
-`make install`
-
-Run the project Fig:1.2
-`make app`
+- if you ever get out of the enviroment feel free to activate it by `source salt/bin/activate`
 
 
 ![Fig:1.2: salt-server](salt-server.png "Fig:1.2: salt-server")
