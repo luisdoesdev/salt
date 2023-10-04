@@ -41,89 +41,38 @@ By following this convention, you can easily navigate the commit history and und
 
 ## File Intents:
 The "File Intents" section in the README file is meant to provide a brief description of the purpose of each file and directory in the project's directory structure. This information can be useful for developers who are new to the project and need to quickly understand what each file and directory is for. It can also serve as a reference for developers who are already familiar with the project but need a quick reminder of what a particular file or directory is used for:
-- `Makefile`: a file that contains instructions for the `make` utility
+- ~~`Makefile`: a file that contains instructions for the `make` utility~~
 - `core/`: a directory that contains the core application code
 - `core/__init__.py`: an empty file that marks the `core` directory as a Python package
 - `core/app.py`: a file that contains the main application code
 - `core/tests/`: a directory that contains the unit tests for the application
 - `core/tests/__init__.py`: an empty file that marks the `tests` directory as a Python package
 - `core/tests/test.py`: a file that contains the unit tests for the application
+- `tasks.py`: a file that contains the tasks for the `invoke` utility
 - `.gitignore`: a file that specifies files and directories that should be ignored by Git
 - `changelog.md`: a file that contains a log of changes to the project
  
 
 ## Prerequisites
-To run this project, it's essential to use Docker, which allows you to package the application and its dependencies into a container that can run on any computing environment.
 
-Install Docker following the instructions on the official Docker documentation.
-Building the Docker Image
-Build the Docker image for the Salt application. Navigate to the project directory and run:
+## Installation
+1. Install virtualenv `pip install virtualenv`
+2. create virtualenv `virtualenv -p python3 salt`
+3. activate virtualenv `source salt/bin/activate` Fig:1.1
+4. Install invoke `pip install invoke`
+5. Install dependencies `invoke install`
 
-bash
-Copy code
-$ docker build -t salt-app .
-This command builds the Docker image using the Dockerfile in the current directory and tags it as salt-app.
-Running the Application
-To run the Salt application inside a Docker container, use the following command:
-
-bash
-Copy code
-$ docker run -p 8000:8000 salt-app
-This command runs the Docker container and maps port 8000 on your machine to port 8000 on the container. Now, you should be able to access the application at http://localhost:8000 in your web browser.
-
-Stopping the Application
-To stop the Docker container running the Salt application, first find the container ID with:
-
-bash
-Copy code
-$ docker ps
-Then, stop the container using:
-
-bash
-Copy code
-$ docker stop [CONTAINER_ID]
-Replace [CONTAINER_ID] with the actual ID of your running container.
-
-Start
-With Docker, managing and running the project becomes straightforward and does not require managing dependencies on your local machine.
-
-Running the Application
-As mentioned in the prerequisites section, use the following command to run the application:
-
-bash
-Copy code
-$ docker run -p 8000:8000 salt-app
-Running Tests
-If you have tests defined and would like to run them in a Docker environment, ensure your Dockerfile or an additional Dockerfile is set up to run tests, and use the following command:
-
-bash
-Copy code
-$ docker run salt-app test
-Ensure that the test command is defined in your Docker setup to run your tests.
-
-
-
-
+## Usage
+The following commands are available in the project:
+```
+    invoke test    - to run tests
+    invoke app     - to run the app fig:1.2
+```
 
 
 ![Figure 1.1: salt-env](salt-env.png "Figure 1.1: Salt environment")
 
-- if you ever get out of the enviroment feel free to activate it by `workon salt`
-
-
-
-Now that you have setup the salt env you will have access to the Make file commands
-which will make it easier to manage the project
-
-_if make commands to do work ensure that they can be executed `chmod +x Makefile`_
-
-
-# Start
-Unload the projects dependies in the project
-`make install`
-
-Run the project Fig:1.2
-`make app`
+- if you ever get out of the enviroment feel free to activate it by `source salt/bin/activate`
 
 
 ![Fig:1.2: salt-server](salt-server.png "Fig:1.2: salt-server")
