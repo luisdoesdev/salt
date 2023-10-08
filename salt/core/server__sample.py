@@ -3,12 +3,10 @@
 from http import server
 from typing import Any
 from wsgiref.simple_server import make_server
-
 import unittest
   
 
 def core_app(env, start_response):
-
     if not env:
         return 'The environment dictionary is empty.'.encode('utf-8')
 

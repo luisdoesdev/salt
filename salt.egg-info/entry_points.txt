@@ -1,2 +1,0 @@
-[console_scripts]
-salt-cli = salt.core.cli:main

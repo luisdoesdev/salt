@@ -1,5 +1,5 @@
 #App
-from api import API
+from core.api import API
 
 TEMPLATE = "templates" # TODO: remove the need for 'core' in the path
 app = API(templates_dir=TEMPLATE)

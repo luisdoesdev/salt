@@ -8,8 +8,8 @@ from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
 
-class API:
-    def __init__(self, templates_dir) -> None:
+class API: # rename to Salt
+    def __init__(self, templates_dir='templates') -> None:
         self.routes = {}
         self.templates_env = Environment(
             loader=FileSystemLoader(os.path.abspath(templates_dir))

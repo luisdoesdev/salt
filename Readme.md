@@ -74,7 +74,7 @@ The "File Intents" section in the README file is meant to provide a brief descri
 
 ## Installation
 1. Install virtualenv `pip install virtualenv`
-2. create virtualenv `virtualenv -p python3 salt`
+2. create virtualenv `virtualenv -p python3 salt-env`
 3. activate virtualenv `source salt/bin/activate` Fig:1.1
 4. Install invoke `pip install invoke`
 5. Install dependencies `invoke install`
