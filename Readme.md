@@ -20,6 +20,23 @@ Salt/
 │       └── test.py
 ├── .gitignore
 └── changelog.md
+
+salt/
+├── salt/
+│   ├── __init__.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── cli.py
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── test_app.py
+├── setup.py
+├── README.md
+├── .gitignore
+
 ```
 
 ## Evolution

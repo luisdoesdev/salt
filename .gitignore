@@ -11,3 +11,4 @@ venv/
 .coverage
 
 Dockerfile
+.env
