@@ -54,7 +54,7 @@ setup(
     install_requires=REQ,
     entry_points={
         'console_scripts': [
-            'salt-cli = salt.core.cli:main',
+            'salt-cli = salt.cli:main',
             # add any other console scripts here
         ]
     },

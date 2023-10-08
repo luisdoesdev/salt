@@ -2,14 +2,17 @@
 
 import inspect
 import os
+from re import TEMPLATE
 from parse import parse
 from webob import Request, Response
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
+from wsgiref.simple_server import make_server
 
-class API: # rename to Salt
-    def __init__(self, templates_dir='templates') -> None:
+TEMPLATE = 'salt/templates'
+class SALT: # rename to Salt
+    def __init__(self, templates_dir=TEMPLATE) -> None:
         self.routes = {}
         self.templates_env = Environment(
             loader=FileSystemLoader(os.path.abspath(templates_dir))
@@ -82,3 +85,18 @@ class API: # rename to Salt
         return self.templates_env.get_template(template_name).render(**context)
     
        
+    def app_settings_info(self):
+        print(f'''
+            TEMPLATE: {TEMPLATE}
+        ''')
+
+    def run(self):
+        server = make_server("localhost", 8000, self)
+        try: 
+            print("Server running on port 8000")
+            print("Press CTRL + C to close")
+            server.serve_forever()
+        except KeyboardInterrupt:
+            server.shutdown()
+            server.server_close()
+            print("Server closed")

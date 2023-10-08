@@ -1,9 +1,6 @@
-#App
-from core.api import API
+from salt import SALT
 
-TEMPLATE = "templates" # TODO: remove the need for 'core' in the path
-app = API(templates_dir=TEMPLATE)
-
+app = SALT()
 
 @app.route('/home')
 def home(request, response):
@@ -39,3 +36,16 @@ app.add_route("/sample", alternative_routing)
 @app.route("/template")
 def template_handler(req, resp):
     resp.text = app.template("index.html", context={"name": "Template Name", "name": "Salt Framework"})
+
+@app.route("/")
+def index(request, response):
+    response.text = app.template("default.html", context={"name": "Salt Framework"})
+
+
+# if __name__ == "__main__":
+#     app.run() # this is the entry point for the application 
+#     # TODO: add a run method to the SALT class
+#     # app.run(host="localhost", port=8000)
+#     # app.app_settings_info()
+#     # app.test_client()
+#     # app.template("index.html", context={"name": "Salt Framework"})

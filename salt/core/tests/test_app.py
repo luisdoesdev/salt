@@ -1,10 +1,10 @@
 import pytest
-from api import API
+from salt.salt import SALT
 
-# Fixture for the API instance
+# Fixture for the SALT instance
 @pytest.fixture
 def api():
-    app = API('core/templates')
+    app = SALT()
 
     @app.route('/home')
     def home(request, response):

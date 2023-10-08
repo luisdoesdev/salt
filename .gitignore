@@ -6,9 +6,14 @@
 
 # Ignore virtual environment directories
 venv/
+salt-venv/
 
 
 .coverage
 
 Dockerfile
 .env
+
+build/
+.pytest_cache/
+salt.egg-info/

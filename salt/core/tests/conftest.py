@@ -1,11 +1,11 @@
 from os import environ
 import pytest
 
-from core.api import API
+from salt.salt import SALT as Salt
 
 @pytest.fixture
 def api():
-    return API('core/templates')
+    return Salt()
 
 @pytest.fixture
 def client(api,  method='GET', path='/'):

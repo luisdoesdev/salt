@@ -43,20 +43,3 @@ server = make_server('localhost',8000, app=Reverseware(core_app))
 print(f'Server is running... in {8000}')
 server.serve_forever()
 
-
-# class TestApp(unittest.TestCase):
-#     env_test = {'key':'value','key':'value'}
-#     def start_response_test(a ,b):
-#         return a, b
-#     app_full = core_app(env_test, start_response_test)
-#     app_empty = core_app({}, start_response_test)
-  
-#     # Returns True or False. 
-#     def test_response(self):  
-#         self.assertEqual(self.app_full, [b'key: value'])      
-#     def test_empty_response(self):
-#         self.assertEqual(self.app_empty, b'The environment dictionary is empty.')    
-
-  
-# if __name__ == '__main__':
-#     unittest.main()

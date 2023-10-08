@@ -1,10 +1,10 @@
 import pytest
-from api import API
+from salt.salt import SALT
 
-# Fixture for the API instance
+# Fixture for the SALT instance
 @pytest.fixture
 def api():
-    return API('core/templates')
+    return SALT('core/templates')
 
 # Fixture for the test client
 @pytest.fixture

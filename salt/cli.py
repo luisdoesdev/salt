@@ -1,6 +1,10 @@
 # salt/core/cli.py
 
+import subprocess
+from salt.app import app
+
 import argparse
+
 
 class Onboarding:
     def __init__(self):
@@ -39,11 +43,24 @@ class Onboarding:
         elif args.command == 'tutorial':
             self.access_tutorial()
         elif args.command == 'start':
-            self.start_app()
+            # self.start_app()
+            # TODO: add a run method to the SALT class
+            # app.run()
+            app.run()
         elif args.command == 'activate':
             self.activate_account()
         elif args.command == 'test':
-            self.run_tests()
+            # self.run_tests()
+            # app.test_client()
+            # run cms pytest
+            process = subprocess.Popen(['pytest'], stdout=subprocess.PIPE)
+            output, error = process.communicate()
+            if error:
+                print(f"Error: {error.decode()}")
+            else:
+                print(output.decode())
+            
+
         elif args.command == 'install':
             self.install_app_and_dependencies()
         elif args.command == 'usage':
