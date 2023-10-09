@@ -1,6 +1,20 @@
 import pytest
 from salt.salt import SALT
 
+
+FILE_DIR = "css"
+FILE_NAME = "main.css"
+FILE_CONTENTS = '''element{
+    --garlic-theme-color:  rgb(136, 95, 66);
+}
+a {color: var(--garlic-theme-color);}'''
+def _create_static(static_dir):
+    asset = static_dir.mkdir(FILE_DIR).join(FILE_NAME)
+    asset.write(FILE_CONTENTS)
+
+    return asset
+
+
 # Fixture for the SALT instance
 @pytest.fixture
 def api():
@@ -82,3 +96,27 @@ def test_template(api, client):
     assert "text/html" in response.headers["Content-Type"]
     assert "Response Title" in response.text
     assert "Response Text" in response.text
+
+def test_custom_exception_handler(api, client):
+    def on_exception(req, resp, exc):
+        resp.text = "AttributeErrorHappened"
+
+    api.add_exception_handler(on_exception)
+
+    @api.route("/")
+    def index(req, resp):
+        raise AttributeError()
+
+    response = client.get("http://testserver/")
+
+    assert response.text == "AttributeErrorHappened"
+
+def test_404_is_returned_for_nonexistent_static_file(client):
+    assert client.get(f"http://testserver/main.css)").status_code == 404
+
+def test_assets_are_served(tmpdir_factory):
+    api = SALT()
+    client = api.test_client()
+    response = client.get(f"http://testserver/{FILE_NAME}")
+    assert response.status_code == 200
+    assert response.text == FILE_CONTENTS

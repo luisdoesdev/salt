@@ -1,0 +1,4 @@
+element{
+    --garlic-theme-color:  rgb(136, 95, 66);
+}
+a {color: var(--garlic-theme-color);}

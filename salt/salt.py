@@ -9,21 +9,31 @@ from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
 from wsgiref.simple_server import make_server
+from whitenoise import WhiteNoise
 
-TEMPLATE = 'salt/templates'
-class SALT: # rename to Salt
-    def __init__(self, templates_dir=TEMPLATE) -> None:
+
+class SALT:
+    def __init__(self, templates_dir='salt/templates', static_dir="salt/static") -> None:
         self.routes = {}
         self.templates_env = Environment(
             loader=FileSystemLoader(os.path.abspath(templates_dir))
         )
+
+        self.exception_handler = None
+        
+        self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
     
     def __call__(self, environ, start_response):
+        return self.whitenoise(environ, start_response)
+
+    def wsgi_app(self, environ, start_response):
         request = Request(environ)
 
         response = self.handle_request(request)
 
         return response(environ, start_response)
+
+
     
     def add_route(self, path, handler):
         assert path not in self.routes, "Route exists"
@@ -58,17 +68,24 @@ class SALT: # rename to Salt
 
         handler, kwargs = self.find_handler(request_path=request.path)
 
-        if handler is not None:
-            if inspect.isclass(handler):
-                handler_function = getattr(handler(), request.method.lower(), None)
-                if handler_function is None:
-                    raise AttributeError("Method not allowed", request.method)
-                
-                handler_function(request, response, **kwargs)
+        try:
+            if handler is not None:
+                if inspect.isclass(handler):
+                    handler_function = getattr(handler(), request.method.lower(), None)
+                    if handler_function is None:
+                        raise AttributeError("Method not allowed", request.method)
+                    
+                    handler_function(request, response, **kwargs)
+                else:
+                    handler(request, response, **kwargs) # kwargs injects the named parameters from the parse library
             else:
-                handler(request, response, **kwargs) # kwargs injects the named parameters from the parse library
-        else:
-            self.default_response(response)
+                self.default_response(response)
+        
+        except Exception as e:
+            if self.exception_handler is None:
+                raise e
+            else:
+                self.exception_handler(request, response, e)
        
         return response
     
@@ -100,3 +117,8 @@ class SALT: # rename to Salt
             server.shutdown()
             server.server_close()
             print("Server closed")
+    
+
+    def add_exception_handler(self, exception_handler):
+        self.exception_handler = exception_handler
+    

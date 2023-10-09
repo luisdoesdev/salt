@@ -39,7 +39,11 @@ def template_handler(req, resp):
 
 @app.route("/")
 def index(request, response):
-    response.text = app.template("default.html", context={"name": "Salt Framework"})
+    response.text = app.template("salt.html", context={"name": "Salt Framework"})
+
+@app.route("/exception")
+def exception_throwing_handler(request, response):
+    raise AssertionError("This handler should not be used.")
 
 
 # if __name__ == "__main__":
