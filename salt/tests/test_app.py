@@ -1,13 +1,15 @@
 import pytest
 from salt.salt import SALT
+from middleware import Middleware
 
 
 FILE_DIR = "css"
 FILE_NAME = "main.css"
-FILE_CONTENTS = '''element{
-    --garlic-theme-color:  rgb(136, 95, 66);
-}
-a {color: var(--garlic-theme-color);}'''
+FILE_CONTENTS = '''/*
+* This file is part of the Salt Project.
+*/
+
+a {color: chocolate;}'''
 def _create_static(static_dir):
     asset = static_dir.mkdir(FILE_DIR).join(FILE_NAME)
     asset.write(FILE_CONTENTS)
@@ -120,3 +122,41 @@ def test_assets_are_served(tmpdir_factory):
     response = client.get(f"http://testserver/{FILE_NAME}")
     assert response.status_code == 200
     assert response.text == FILE_CONTENTS
+
+
+def test_middleware_methods_are_called(api, client):
+    process_request_called = False
+    process_response_called = False
+
+    class CallMiddlewareMethods(Middleware):
+        def __init__(self, app):
+            super().__init__(app)
+
+        def process_request(self, req):
+            nonlocal process_request_called
+            process_request_called = True
+
+        def process_response(self, req, resp):
+            nonlocal process_response_called
+            process_response_called = True
+
+    api.add_middleware(CallMiddlewareMethods)
+
+    @api.route('/')
+    def index(req, res):
+        res.text = "YOLO"
+
+    client.get('http://testserver/')
+
+    assert process_request_called is True
+    assert process_response_called is True
+
+def test_allowed_methods_for_function_based_handlers(api, client):
+    @api.route("/home", allowed_methods=["post"])
+    def home(req, resp):
+        resp.text = "Hello"
+
+    with pytest.raises(AttributeError):
+        client.get("http://testserver/home")
+
+    assert client.post("http://testserver/home").text == "Hello"

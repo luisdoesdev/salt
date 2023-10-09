@@ -1,6 +1,7 @@
 # Api
 
 import inspect
+from typing import Type
 import os
 from re import TEMPLATE
 from parse import parse
@@ -10,6 +11,8 @@ from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
 from wsgiref.simple_server import make_server
 from whitenoise import WhiteNoise
+
+from middleware import Middleware
 
 
 class SALT:
@@ -24,7 +27,13 @@ class SALT:
         self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
     
     def __call__(self, environ, start_response):
-        return self.whitenoise(environ, start_response)
+        path_info = environ["PATH_INFO"]
+
+        if path_info.startswith("/static"):
+            environ["PATH_INFO"] = path_info[len("/static"):]
+            return self.whitenoise(environ, start_response)
+        
+        return self.middleware(environ, start_response)
 
     def wsgi_app(self, environ, start_response):
         request = Request(environ)
@@ -122,3 +131,5 @@ class SALT:
     def add_exception_handler(self, exception_handler):
         self.exception_handler = exception_handler
     
+    def add_middleware(self, middleware_cls: Type[Middleware]) -> None:
+        self.middleware = middleware_cls(self)
